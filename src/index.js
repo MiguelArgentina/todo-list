@@ -17,9 +17,13 @@ addTodoBtn.addEventListener('click', addTodo);
 function addProject(e) {
   e.preventDefault();
   let newProject = new Project(projectInput.value);
-
+  
   projectsCollection.push(newProject);
-  console.log(projectsCollection);
+
+  for(let i=0; i <= projectsCollection.length; i+=1 ){
+    newProject.addTodo='Todo ' + i;
+  }
+  
 
   const projectList = document.querySelector('.project-list');
   const projectItem = document.createElement('li');
@@ -36,19 +40,25 @@ function addProject(e) {
   radioLabel.classList.add('btn', 'btn-secondary');
   radioLabel.setAttribute('for', `option${projectsCollection.length}`);
   radioLabel.innerText = newProject._name;
+  radioLabel.addEventListener("click", showTodos);
 
   projectItem.append(radioInput, radioLabel);
 
   projectList.appendChild(projectItem);
   //   console.log(document.querySelector('input[name="options"]:checked').value);
-  console.log(projectsCollection);
+  
 }
 
-function logArray() {
-  console.log(projectsCollection);
-}
 
 function addTodo(e) {
   e.preventDefault();
-  console.log(projectsCollection);
+  
+}
+
+function showTodos(e){
+    const tempArray = projectsCollection.filter(
+      (item) => item["_name"] === e.target.outerText
+    );
+   console.log(tempArray[0]["_name"]);
+   tempArray[0]['_todos'].forEach(item => console.log(item))
 }

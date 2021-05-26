@@ -7,4 +7,8 @@ export default class Project {
   set addTodo(todo){
       this._todos.push(todo);
   }
+
+  get showTodos() {
+      return this._todos;
+  }
 }
