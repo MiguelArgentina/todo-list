@@ -1,1 +1,40 @@
 @import 'bootstrap/scss/bootstrap';
+
+.main-cont {
+  height: 85vh;
+}
+
+.projects {
+  background: beige;
+  border-radius: 0.5rem;
+}
+
+form {
+  input {
+    padding: 0.5rem;
+    border: none;
+    background: white;
+  }
+  button {
+    padding: 0.5rem;
+    border: none;
+    background: white;
+    color: #fda085;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    &:hover {
+      background: #fda085;
+      color: white;
+    }
+  }
+}
+
+.todos-col {
+  background-color: gray;
+  border-radius: 0.5rem;
+}
+
+.add-todo-btn {
+  width: max-content;
+}

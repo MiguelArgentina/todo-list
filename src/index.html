@@ -4,9 +4,105 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ToDo App</title>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+      integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
+      crossorigin="anonymous"
+    />
+    <title>Todo App</title>
   </head>
   <body>
-    <h1 class="mt-5">todolist</h1>
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container-fluid justify-content-center">
+        <h1 class="navbar-brand" href="#">Taskify</h1>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="row main-cont">
+        <div class="col-3 projects">
+          <h4>Projects</h4>
+          <form>
+            <input
+              type="text"
+              name="newproject"
+              id="newproject"
+              placeholder="Add a new project"
+            />
+            <button id="project-submit" type="submit">
+              <i class="fa fa-plus-square"></i>
+            </button>
+          </form>
+          <ul class="project-list"></ul>
+        </div>
+        <div class="col-9 todos-col">
+          <h4>Todos</h4>
+          <div id="todos" class="row">
+            <!-- Button trigger modal -->
+            <button
+              type="button"
+              class="btn btn-primary add-todo-btn"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              Add new todo
+            </button>
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="exampleModal"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Modal title
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="todo-form">
+                      <div>
+                        <input type="text" placeholder="Title" />
+                      </div>
+                      <div>
+                        <input type="text" placeholder="Description" />
+                      </div>
+                      <div>
+                        <input type="date" placeholder="Due date" />
+                      </div>
+                      <div>
+                        <select name="priority" id="todo-priority">
+                          <option value="high">High</option>
+                          <option value="medium">Medium</option>
+                          <option value="low">Low</option>
+                        </select>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      id="submit-todo"
+                      type="button"
+                      class="btn btn-primary"
+                    >
+                      Add todo
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
