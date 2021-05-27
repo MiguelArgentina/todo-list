@@ -23,6 +23,9 @@ function addProject(e) {
   const projectItem = document.createElement('li');
   projectItem.classList.add('my-2');
 
+  const deleteProjectBtn = document.createElement('i');
+  deleteProjectBtn.classList.add('fas', 'fa-trash-alt', 'ms-2');
+
   const radioInput = document.createElement('input');
   Object.assign(radioInput, {
     type: 'radio',
@@ -39,6 +42,7 @@ function addProject(e) {
 
   projectItem.append(radioInput, radioLabel);
 
+  projectItem.appendChild(deleteProjectBtn);
   projectList.appendChild(projectItem);
 }
 
