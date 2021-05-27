@@ -1,12 +1,21 @@
 @import 'bootstrap/scss/bootstrap';
 
+body {
+  background: #e0e6e7;
+}
+
 .main-cont {
   height: 85vh;
 }
 
 .projects {
-  background: beige;
+  background: #f0f156;
   border-radius: 0.5rem;
+  box-shadow: 2px 4px 6px black;
+  h4 {
+    width: max-content;
+    border-bottom: 2px solid;
+  }
 }
 
 form {
@@ -14,8 +23,10 @@ form {
     padding: 0.5rem;
     border: none;
     background: white;
+    border-radius: 0.7rem;
   }
   button {
+    border-radius: 0.7rem;
     padding: 0.5rem;
     border: none;
     background: white;
@@ -31,8 +42,13 @@ form {
 }
 
 .todos-col {
-  background-color: gray;
+  background-color: #d9ed92;
   border-radius: 0.5rem;
+  box-shadow: 2px 4px 6px black;
+  h4 {
+    width: max-content;
+    border-bottom: 2px solid;
+  }
 }
 
 .add-todo-btn {
