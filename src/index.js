@@ -20,14 +20,10 @@ function addProject(e) {
   
   projectsCollection.push(newProject);
 
-  for(let i=0; i <= projectsCollection.length; i+=1 ){
-    newProject.addTodo='Todo ' + i;
-  }
-  
-
   const projectList = document.querySelector('.project-list');
   const projectItem = document.createElement('li');
-  //   projectItem.textContent = projectInput.value;
+  projectItem.classList.add('my-2');
+  
   const radioInput = document.createElement('input');
   Object.assign(radioInput, {
     type: 'radio',
@@ -37,7 +33,7 @@ function addProject(e) {
     autocomplete: 'off',
   });
   const radioLabel = document.createElement('label');
-  radioLabel.classList.add('btn', 'btn-secondary');
+  radioLabel.classList.add("btn", "btn-outline-success");
   radioLabel.setAttribute('for', `option${projectsCollection.length}`);
   radioLabel.innerText = newProject._name;
   radioLabel.addEventListener("click", showTodos);
@@ -45,20 +41,47 @@ function addProject(e) {
   projectItem.append(radioInput, radioLabel);
 
   projectList.appendChild(projectItem);
-  //   console.log(document.querySelector('input[name="options"]:checked').value);
+    
   
 }
 
 
 function addTodo(e) {
   e.preventDefault();
+  const projectName = document.querySelector("#todoProject").innerText;
+  const title = document.querySelector("#todoTitle").value;
+  const description = document.querySelector("#todoDescription").value;
+  const dueDate = document.querySelector("#todoDueDate").value;
+  const priority = document.querySelector("#todoPriority").value;
   
+  const project = getProject(projectName);
+  const newTodo = new Todo(title, description, dueDate, priority);
+  project.addTodo = newTodo;
+  console.log(project);
+
 }
 
 function showTodos(e){
-    const tempArray = projectsCollection.filter(
-      (item) => item["_name"] === e.target.outerText
-    );
-   console.log(tempArray[0]["_name"]);
-   tempArray[0]['_todos'].forEach(item => console.log(item))
+    document.querySelector("#todoProject").innerText =
+      e.target.outerText;
+   
+
+
+      //Get the project clicked and show all the Todos
+    const tempProject = getProject(e.target.outerText)
+   console.log(tempProject["_name"]);
+   tempProject["_todos"].forEach((item) => console.log(item));
+
+
+
+   //console.log(document.querySelector('input[name="options"]:checked').innerText);
+
 }
+
+function getProject(projectName){
+    const projectsColl = projectsCollection.filter(
+      (item) => item["_name"] === projectName
+    );
+    return projectsColl[0];
+}
+

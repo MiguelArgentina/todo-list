@@ -70,17 +70,20 @@
                   </div>
                   <div class="modal-body">
                     <form id="todo-form">
+                    <div class="d-flex justify-content-between">               
                       <div>
-                        <input type="text" placeholder="Title" />
+                        <input id='todoTitle' type="text" placeholder="Title" />
+                        </div>
+                        <span id='todoProject'>Please select a project</span>
+                      </div>                 
+                      <div>
+                        <input id='todoDescription' type="text" placeholder="Description" />
                       </div>
                       <div>
-                        <input type="text" placeholder="Description" />
+                        <input id='todoDueDate' type="date" placeholder="Due date" />
                       </div>
                       <div>
-                        <input type="date" placeholder="Due date" />
-                      </div>
-                      <div>
-                        <select name="priority" id="todo-priority">
+                        <select name="priority" id="todoPriority">
                           <option value="high">High</option>
                           <option value="medium">Medium</option>
                           <option value="low">Low</option>
