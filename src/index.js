@@ -3,66 +3,82 @@ import Project from './project';
 import './style.scss';
 import Todo from './todo';
 import clearContainer from './clearContainer';
+import { generateTodoId, getProject, projectNameExists} from "./helpers";
 
 const addProjectBtn = document.getElementById('project-submit');
 const projectInput = document.getElementById('newproject');
 const addTodoBtn = document.getElementById('submit-todo');
 const projectsCollection = [];
 //Event listener ------------------
-addProjectBtn.addEventListener('click', addProject);
+addProjectBtn.addEventListener('click', addProjectEventHandler);
 addTodoBtn.addEventListener('click', addTodo);
+window.onload = () => addProjectButton("Default Project");
 
 //Functions------------------
-function addProject(e) {
+function addProjectEventHandler(e) {
   e.preventDefault();
-  let newProject = new Project(projectInput.value);
 
-  projectsCollection.push(newProject);
+  addProjectButton()
+}
 
-  const projectList = document.querySelector('.project-list');
-  const projectItem = document.createElement('li');
-  projectItem.classList.add('my-2');
+function addProjectButton(projectName){
+    
+    let newProject =''
 
-  const deleteProjectBtn = document.createElement('i');
-  deleteProjectBtn.classList.add('fas', 'fa-trash-alt', 'ms-2');
+    projectName === undefined ? 
+    newProject = new Project(projectInput.value) :
+    newProject = new Project(projectName);
 
-  const radioInput = document.createElement('input');
-  Object.assign(radioInput, {
-    type: 'radio',
-    className: 'btn-check',
-    name: 'options',
-    id: `option${projectsCollection.length}`,
-    autocomplete: 'off',
-  });
-  const radioLabel = document.createElement('label');
-  radioLabel.classList.add('btn', 'btn-outline-success');
-  radioLabel.setAttribute('for', `option${projectsCollection.length}`);
-  radioLabel.innerText = newProject._name;
-  radioLabel.addEventListener('click', showTodos);
+    if (projectNameExists(newProject.name, projectsCollection)) {
+      alert("Project name already exists. Please pick another one");
+      return;
+    }  
 
-  projectItem.append(radioInput, radioLabel);
+    projectsCollection.push(newProject);
 
-  projectItem.appendChild(deleteProjectBtn);
-  projectList.appendChild(projectItem);
+    const projectList = document.querySelector(".project-list");
+    const projectItem = document.createElement("li");
+    projectItem.classList.add("my-2");
+
+    const deleteProjectBtn = document.createElement("i");
+    deleteProjectBtn.classList.add("fas", "fa-trash-alt", "ms-2");
+
+    const radioInput = document.createElement("input");
+    Object.assign(radioInput, {
+      type: "radio",
+      className: "btn-check",
+      name: "options",
+      id: `option${projectsCollection.length}`,
+      autocomplete: "off",
+    });
+    const radioLabel = document.createElement("label");
+    radioLabel.classList.add("btn", "btn-outline-success");
+    radioLabel.setAttribute("for", `option${projectsCollection.length}`);
+    radioLabel.innerText = newProject._name;
+    radioLabel.addEventListener("click", showTodos);
+    projectItem.append(radioInput, radioLabel);
+    projectItem.appendChild(deleteProjectBtn);
+    projectList.appendChild(projectItem);
 }
 
 function addTodo(e) {
   e.preventDefault();
-  const projectName = document.querySelector('#todoProject').innerText;
+  const projectName = document.querySelector(".modal-title").innerText;
   const title = document.querySelector('#todoTitle').value;
   const description = document.querySelector('#todoDescription').value;
   const dueDate = document.querySelector('#todoDueDate').value;
   const priority = document.querySelector('#todoPriority').value;
 
-  const project = getProject(projectName);
-  const newTodo = new Todo(title, description, dueDate, priority);
+  const project = getProject(projectName, projectsCollection);
+  const todoId = generateTodoId(project)
+  const newTodo = new Todo(todoId, title, description, dueDate, priority);
   project.addTodo = newTodo;
 
   populateProjectTodos(projectName);
 }
 
 function showTodos(e) {
-  document.getElementById('todoProject').innerText = e.target.innerText;
+  document.querySelector(".modal-title").innerText = e.target.innerText;
   populateProjectTodos(e.target.innerText);
 
   //console.log(document.querySelector('input[name="options"]:checked').innerText);
@@ -72,8 +88,7 @@ function populateProjectTodos(projectTitle) {
   const todoContainer = document.getElementById('todosDropdowns');
   clearContainer('#todosDropdowns');
   //Get the project clicked and show all the Todos
-  const tempProject = getProject(projectTitle);
-  console.log(projectTitle);
+  const tempProject = getProject(projectTitle, projectsCollection);
   tempProject['_todos'].forEach((item) => {
     //todo dropdown
     const dropDiv = document.createElement('div');
@@ -84,6 +99,7 @@ function populateProjectTodos(projectTitle) {
 
     const deleteBtn = document.createElement('i');
     deleteBtn.classList.add('fas', 'fa-trash-alt');
+
 
     const dropToggle = document.createElement('a');
     dropToggle.classList.add('btn', 'btn-primary', 'dropdown-toggle');
@@ -98,6 +114,14 @@ function populateProjectTodos(projectTitle) {
     dropDiv.appendChild(dropToggle);
     dropDiv.appendChild(editBtn);
     dropDiv.appendChild(deleteBtn);
+
+
+  
+  //TODO: move the event to the "events" section
+  deleteBtn.addEventListener("click", deleteTodo);
+
+
+
 
     const dropMenu = document.createElement('ul');
     dropMenu.classList.add('dropdown-menu');
@@ -131,9 +155,32 @@ function populateProjectTodos(projectTitle) {
   });
 }
 
-function getProject(projectName) {
-  const projectsColl = projectsCollection.filter(
-    (item) => item['_name'] === projectName
-  );
-  return projectsColl[0];
+
+
+function deleteTodo(e) {
+const projectName = document.querySelector(".modal-title").innerText;
+  const projectToEdit = getProject(projectName, projectsCollection);
+  console.log(projectToEdit);
+  const todoTitle = e.target.parentNode.childNodes[0].innerText;
+  const todoDescription = e.target.parentNode.childNodes[3].childNodes[0].innerText;
+  const todoDuedate = e.target.parentNode.childNodes[3].childNodes[1].innerText;
+  const todoPriority = e.target.parentNode.childNodes[3].childNodes[2].innerText;
+const todosCopy = projectToEdit.showTodos;
+  todosCopy.forEach((item, index) => {
+    if (
+      item.title === todoTitle &&
+      item.description === todoDescription &&
+      item.dueDate === todoDuedate &&
+      item.priority === todoPriority
+    ) {
+      todosCopy.splice(index, 1);
+      return
+    }
+  });
+  //if (projectToEdit.showTodos) console.log(projectToEdit.showTodos);
+  projectToEdit.setTodo = todosCopy;
+  console.log(projectToEdit);
+  populateProjectTodos(projectName);
+  
 }
+
