@@ -73,6 +73,7 @@ function addProjectButton(projectName) {
 
 function addTodo(e) {
   e.preventDefault();
+
   const projectName = document.querySelector('.modal-title').innerText;
   const title = document.querySelector('#todoTitle').value;
   const description = document.querySelector('#todoDescription').value;
@@ -80,12 +81,42 @@ function addTodo(e) {
   const priority = document.querySelector('#todoPriority').value;
 
   const project = helpers.getProject(projectName, projectsCollection);
-  const todoId = helpers.generateTodoId(project);
-  const newTodo = new Todo(todoId, title, description, dueDate, priority);
-  project.addTodo = newTodo;
+  let todoId = 0
+  let tempTodo = new Todo(todoId, title, description, dueDate, priority);
 
+  if (document.getElementById("submit-todo").innerText == "Update"){
+    todoId = document.querySelector("#todoId").value;
+    tempTodo = new Todo(todoId, title, description, dueDate, priority);
+    updateExistingTodo(tempTodo, project);
+  }
+  else{
+    todoId = helpers.generateTodoId(project);
+    tempTodo = new Todo(todoId, title, description, dueDate, priority);
+    pushNewTodo(tempTodo, project);
+  }
+    const form = document.getElementById("todo-form");
+    form.reset();
+
+
+    document.querySelector("#btn-close-modal").click(); 
+  
   populateProjectTodos(projectName);
 }
+
+function pushNewTodo(tempTodo, project) {
+  project.addTodo = tempTodo;
+}
+
+function updateExistingTodo(tempTodo, project) {
+  project._todos.forEach((todo, index) => {
+    if(todo._id == tempTodo._id) {
+      console.log(project._todos);
+      project._todos.splice(index, 1, tempTodo);
+      console.log(project._todos);
+    }
+  })
+}
+
 
 function showTodos(e) {
   document.querySelector('.modal-title').innerText = e.target.innerText;
@@ -186,16 +217,18 @@ function editTodo(e) {
   editTodoBtn.innerText = 'Update';
 
   const projectName = document.querySelector('.modal-title').innerText;
-  const projectToEdit = helpers.getProject(projectName, projectsCollection);
   const todoTitle = e.target.parentNode.childNodes[0].innerText;
   const todoDesc = e.target.parentNode.childNodes[3].childNodes[0].innerText;
   const todoDuedate = e.target.parentNode.childNodes[3].childNodes[1].innerText;
   const todoPrior = e.target.parentNode.childNodes[3].childNodes[2].innerText;
+  const todoId = e.target.parentNode.childNodes[3].childNodes[3].innerText;
 
+  
   document.querySelector('#todoTitle').value = todoTitle;
   document.querySelector('#todoDescription').value = todoDesc;
   document.querySelector('#todoDueDate').value = todoDuedate;
   document.querySelector('#todoPriority').value = todoPrior;
+  document.querySelector("#todoId").value = todoId;
 
   myModal.show();
 }
