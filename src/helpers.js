@@ -1,11 +1,16 @@
 function generateTodoId(project) {
 
-    let i = 0;
-    if (project.showTodos.length == 0) return 0;
-      do {
-        i += 1;
-      } while (project.showTodos.some((item) => item.id == i));
-    return i;
+  let index = 0;
+
+  if (project.showTodos.length == 0) return 0;
+
+  for (index = 0; index < Infinity; index += 1) {
+    if (project.showTodos.every((item) => item.id != index)) {
+      break
+    }
+  }
+
+  return index;
 }
 
 

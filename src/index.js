@@ -3,7 +3,7 @@ import Project from './project';
 import './style.scss';
 import Todo from './todo';
 import clearContainer from './clearContainer';
-import { generateTodoId, getProject, projectNameExists} from "./helpers";
+import * as helpers from "./helpers";
 
 const addProjectBtn = document.getElementById('project-submit');
 const projectInput = document.getElementById('newproject');
@@ -29,8 +29,13 @@ function addProjectButton(projectName){
     newProject = new Project(projectInput.value) :
     newProject = new Project(projectName);
 
-    if (projectNameExists(newProject.name, projectsCollection)) {
+    if (helpers.projectNameExists(newProject.name, projectsCollection)) {
       alert("Project name already exists. Please pick another one");
+      return;
+    }  
+
+    if (newProject.name == '') {
+      alert("Project name cannot be empty");
       return;
     }  
 
@@ -69,8 +74,8 @@ function addTodo(e) {
   const dueDate = document.querySelector('#todoDueDate').value;
   const priority = document.querySelector('#todoPriority').value;
 
-  const project = getProject(projectName, projectsCollection);
-  const todoId = generateTodoId(project)
+  const project = helpers.getProject(projectName, projectsCollection);
+  const todoId = helpers.generateTodoId(project)
   const newTodo = new Todo(todoId, title, description, dueDate, priority);
   project.addTodo = newTodo;
 
@@ -88,7 +93,7 @@ function populateProjectTodos(projectTitle) {
   const todoContainer = document.getElementById('todosDropdowns');
   clearContainer('#todosDropdowns');
   //Get the project clicked and show all the Todos
-  const tempProject = getProject(projectTitle, projectsCollection);
+  const tempProject = helpers.getProject(projectTitle, projectsCollection);
   tempProject['_todos'].forEach((item) => {
     //todo dropdown
     const dropDiv = document.createElement('div');
@@ -159,7 +164,7 @@ function populateProjectTodos(projectTitle) {
 
 function deleteTodo(e) {
 const projectName = document.querySelector(".modal-title").innerText;
-  const projectToEdit = getProject(projectName, projectsCollection);
+  const projectToEdit = helpers.getProject(projectName, projectsCollection);
   console.log(projectToEdit);
   const todoTitle = e.target.parentNode.childNodes[0].innerText;
   const todoDescription = e.target.parentNode.childNodes[3].childNodes[0].innerText;
