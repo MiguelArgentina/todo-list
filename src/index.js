@@ -1,81 +1,86 @@
 import 'bootstrap';
+import { Modal } from 'bootstrap';
 import Project from './project';
 import './style.scss';
 import Todo from './todo';
 import clearContainer from './clearContainer';
-import * as helpers from "./helpers";
+import * as helpers from './helpers';
 
 const addProjectBtn = document.getElementById('project-submit');
 const projectInput = document.getElementById('newproject');
 const addTodoBtn = document.getElementById('submit-todo');
+const openModalBtn = document.getElementById('openModal');
 const projectsCollection = [];
+
 //Event listener ------------------
 addProjectBtn.addEventListener('click', addProjectEventHandler);
 addTodoBtn.addEventListener('click', addTodo);
-window.onload = () => addProjectButton("Default Project");
+openModalBtn.addEventListener('click', changeSubmitText);
+window.onload = () => addProjectButton('Default Project');
 
 //Functions------------------
 function addProjectEventHandler(e) {
   e.preventDefault();
 
-  addProjectButton()
+  addProjectButton();
 }
 
-function addProjectButton(projectName){
-    
-    let newProject =''
+function addProjectButton(projectName) {
+  let newProject = '';
 
-    projectName === undefined ? 
-    newProject = new Project(projectInput.value) :
-    newProject = new Project(projectName);
+  projectName === undefined
+    ? (newProject = new Project(projectInput.value))
+    : (newProject = new Project(projectName));
 
-    if (helpers.projectNameExists(newProject.name, projectsCollection)) {
-      alert("Project name already exists. Please pick another one");
-      return;
-    }  
+  if (helpers.projectNameExists(newProject.name, projectsCollection)) {
+    alert('Project name already exists. Please pick another one');
+    return;
+  }
 
-    if (newProject.name == '') {
-      alert("Project name cannot be empty");
-      return;
-    }  
+  if (newProject.name == '') {
+    alert('Project name cannot be empty');
+    return;
+  }
 
-    projectsCollection.push(newProject);
+  projectsCollection.push(newProject);
 
-    const projectList = document.querySelector(".project-list");
-    const projectItem = document.createElement("li");
-    projectItem.classList.add("my-2");
+  const projectList = document.querySelector('.project-list');
+  const projectItem = document.createElement('li');
+  projectItem.classList.add('my-2');
 
-    const deleteProjectBtn = document.createElement("i");
-    deleteProjectBtn.classList.add("fas", "fa-trash-alt", "ms-2");
+  const deleteProjectBtn = document.createElement('i');
+  deleteProjectBtn.classList.add('fas', 'fa-trash-alt', 'ms-2');
 
-    const radioInput = document.createElement("input");
-    Object.assign(radioInput, {
-      type: "radio",
-      className: "btn-check",
-      name: "options",
-      id: `option${projectsCollection.length}`,
-      autocomplete: "off",
-    });
-    const radioLabel = document.createElement("label");
-    radioLabel.classList.add("btn", "btn-outline-success");
-    radioLabel.setAttribute("for", `option${projectsCollection.length}`);
-    radioLabel.innerText = newProject._name;
-    radioLabel.addEventListener("click", showTodos);
-    projectItem.append(radioInput, radioLabel);
-    projectItem.appendChild(deleteProjectBtn);
-    projectList.appendChild(projectItem);
+  deleteProjectBtn.addEventListener('click', deleteProject);
+
+  const radioInput = document.createElement('input');
+  Object.assign(radioInput, {
+    type: 'radio',
+    className: 'btn-check',
+    name: 'options',
+    id: `option${projectsCollection.length}`,
+    autocomplete: 'off',
+  });
+  const radioLabel = document.createElement('label');
+  radioLabel.classList.add('btn', 'btn-outline-success');
+  radioLabel.setAttribute('for', `option${projectsCollection.length}`);
+  radioLabel.innerText = newProject._name;
+  radioLabel.addEventListener('click', showTodos);
+  projectItem.append(radioInput, radioLabel);
+  projectItem.appendChild(deleteProjectBtn);
+  projectList.appendChild(projectItem);
 }
 
 function addTodo(e) {
   e.preventDefault();
-  const projectName = document.querySelector(".modal-title").innerText;
+  const projectName = document.querySelector('.modal-title').innerText;
   const title = document.querySelector('#todoTitle').value;
   const description = document.querySelector('#todoDescription').value;
   const dueDate = document.querySelector('#todoDueDate').value;
   const priority = document.querySelector('#todoPriority').value;
 
   const project = helpers.getProject(projectName, projectsCollection);
-  const todoId = helpers.generateTodoId(project)
+  const todoId = helpers.generateTodoId(project);
   const newTodo = new Todo(todoId, title, description, dueDate, priority);
   project.addTodo = newTodo;
 
@@ -83,10 +88,8 @@ function addTodo(e) {
 }
 
 function showTodos(e) {
-  document.querySelector(".modal-title").innerText = e.target.innerText;
+  document.querySelector('.modal-title').innerText = e.target.innerText;
   populateProjectTodos(e.target.innerText);
-
-  //console.log(document.querySelector('input[name="options"]:checked').innerText);
 }
 
 function populateProjectTodos(projectTitle) {
@@ -105,7 +108,6 @@ function populateProjectTodos(projectTitle) {
     const deleteBtn = document.createElement('i');
     deleteBtn.classList.add('fas', 'fa-trash-alt');
 
-
     const dropToggle = document.createElement('a');
     dropToggle.classList.add('btn', 'btn-primary', 'dropdown-toggle');
     Object.assign(dropToggle, {
@@ -120,13 +122,8 @@ function populateProjectTodos(projectTitle) {
     dropDiv.appendChild(editBtn);
     dropDiv.appendChild(deleteBtn);
 
-
-  
-  //TODO: move the event to the "events" section
-  deleteBtn.addEventListener("click", deleteTodo);
-
-
-
+    deleteBtn.addEventListener('click', deleteTodo);
+    editBtn.addEventListener('click', editTodo);
 
     const dropMenu = document.createElement('ul');
     dropMenu.classList.add('dropdown-menu');
@@ -157,35 +154,66 @@ function populateProjectTodos(projectTitle) {
     dropPriority.appendChild(dropPriorityCont);
     dropMenu.appendChild(dropPriority);
     todoContainer.appendChild(dropDiv);
+
+    //dropID
+    const dropId = document.createElement('li');
+    const dropIdCont = document.createElement('p');
+    dropIdCont.classList.add('dropdown-item', 'd-none');
+    dropIdCont.innerText = item.id;
+    dropId.appendChild(dropIdCont);
+    dropMenu.appendChild(dropId);
   });
 }
-
-
 
 function deleteTodo(e) {
-const projectName = document.querySelector(".modal-title").innerText;
+  const projectName = document.querySelector('.modal-title').innerText;
   const projectToEdit = helpers.getProject(projectName, projectsCollection);
-  console.log(projectToEdit);
-  const todoTitle = e.target.parentNode.childNodes[0].innerText;
-  const todoDescription = e.target.parentNode.childNodes[3].childNodes[0].innerText;
-  const todoDuedate = e.target.parentNode.childNodes[3].childNodes[1].innerText;
-  const todoPriority = e.target.parentNode.childNodes[3].childNodes[2].innerText;
-const todosCopy = projectToEdit.showTodos;
+  const todoId = e.target.parentNode.childNodes[3].childNodes[3].innerText;
+  const todosCopy = projectToEdit.showTodos;
   todosCopy.forEach((item, index) => {
-    if (
-      item.title === todoTitle &&
-      item.description === todoDescription &&
-      item.dueDate === todoDuedate &&
-      item.priority === todoPriority
-    ) {
+    if (item.id == todoId) {
       todosCopy.splice(index, 1);
-      return
+      return;
     }
   });
-  //if (projectToEdit.showTodos) console.log(projectToEdit.showTodos);
   projectToEdit.setTodo = todosCopy;
-  console.log(projectToEdit);
   populateProjectTodos(projectName);
-  
 }
 
+function editTodo(e) {
+  let myModal = new Modal(document.getElementById('exampleModal'));
+  const editTodoBtn = document.getElementById('submit-todo');
+  editTodoBtn.innerText = 'Update';
+
+  const projectName = document.querySelector('.modal-title').innerText;
+  const projectToEdit = helpers.getProject(projectName, projectsCollection);
+  const todoTitle = e.target.parentNode.childNodes[0].innerText;
+  const todoDesc = e.target.parentNode.childNodes[3].childNodes[0].innerText;
+  const todoDuedate = e.target.parentNode.childNodes[3].childNodes[1].innerText;
+  const todoPrior = e.target.parentNode.childNodes[3].childNodes[2].innerText;
+
+  document.querySelector('#todoTitle').value = todoTitle;
+  document.querySelector('#todoDescription').value = todoDesc;
+  document.querySelector('#todoDueDate').value = todoDuedate;
+  document.querySelector('#todoPriority').value = todoPrior;
+
+  myModal.show();
+}
+
+function changeSubmitText() {
+  const editTodoBtn = document.getElementById('submit-todo');
+  editTodoBtn.innerText = 'Add todo';
+}
+
+function deleteProject(e) {
+  const projName = e.target.parentNode.childNodes[1].innerText;
+  const projParent = e.target.parentNode.parentNode;
+  projParent.removeChild(e.target.parentNode);
+  projectsCollection.forEach((project, index) => {
+    if (project.name == projName) {
+      projectsCollection.splice(index, 1);
+      return;
+    }
+  });
+  clearContainer('#todosDropdowns');
+}
