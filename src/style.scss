@@ -12,6 +12,7 @@ body {
   background: #f0f156;
   border-radius: 0.5rem;
   box-shadow: 2px 4px 6px black;
+
   h4 {
     width: max-content;
     border-bottom: 2px solid;
@@ -25,15 +26,16 @@ form {
     background: white;
     border-radius: 0.7rem;
   }
+
   button {
     border-radius: 0.7rem;
     padding: 0.5rem;
     border: none;
     background: white;
     color: #fda085;
-    background: white;
     cursor: pointer;
     transition: all 0.3s ease;
+
     &:hover {
       background: #fda085;
       color: white;
@@ -45,17 +47,21 @@ form {
   background-color: #d9ed92;
   border-radius: 0.5rem;
   box-shadow: 2px 4px 6px black;
+
   h4 {
     width: max-content;
     border-bottom: 2px solid;
   }
 }
+
 .fa-trash-alt:hover {
   color: rgb(211, 39, 39);
 }
+
 .fa-edit:hover {
   color: rgb(223, 151, 45);
 }
+
 .add-todo-btn {
   width: max-content;
 }

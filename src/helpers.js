@@ -1,34 +1,31 @@
 function generateTodoId(project) {
-
   let index = 0;
 
-  if (project._todos.length == 0) return 0;
+  if (project.todos.length === 0) return 0;
 
-  for (index = 0; index < Infinity; index += 1) {
-    if (project._todos.every((item) => item._id != index)) {
-      break
+  for (let i = 0; i < Infinity; i += 1) {
+    if (project.todos.every((item) => item.id !== i)) {
+      index = i;
+      break;
     }
   }
 
   return index;
 }
 
-
 function getProject(projectName, projectsCollection) {
-let tempProj = []
-    projectsCollection.forEach((project) => {
-      if (project._name === projectName) {
-        tempProj = project;
-        
-      }
-    });
-    return tempProj;
+  let tempProj = [];
+  projectsCollection.forEach((project) => {
+    if (project.name === projectName) {
+      tempProj = project;
+    }
+  });
+  return tempProj;
 }
 
 function updateProject(projectToUpdate, projectsCollection) {
-  let tempProj = [];
   projectsCollection.forEach((project, index) => {
-    if (project._name === projectToUpdate._name) {
+    if (project.name === projectToUpdate.name) {
       projectsCollection.splice(index, 1, projectToUpdate);
     }
   });
@@ -36,17 +33,18 @@ function updateProject(projectToUpdate, projectsCollection) {
 }
 
 function projectNameExists(projectName, projectsCollection) {
-    let nameExists = false
-    if (projectsCollection.length === 0) {return false};
+  let nameExists = false;
+  if (projectsCollection.length === 0) { return false; }
 
   projectsCollection.forEach((project) => {
-    if (project._name === projectName) {
+    if (project.name.toLowerCase() === projectName.toLowerCase()) {
       nameExists = true;
-      return
     }
   });
-  
+
   return nameExists;
 }
 
-export { generateTodoId, getProject, projectNameExists, updateProject };
+export {
+  generateTodoId, getProject, projectNameExists, updateProject,
+};
