@@ -239,12 +239,12 @@ function addProjectButtontoDom(newProject_) {
     type: 'radio',
     className: 'btn-check',
     name: 'options',
-
+    id: newProject.name.replace(' ', '-'),
     autocomplete: 'off',
   });
   const radioLabel = document.createElement('label');
   radioLabel.classList.add('btn', 'btn-outline-success');
-  radioLabel.setAttribute('for', `option${projectsCollection.length}`);
+  radioLabel.setAttribute('for', `${newProject.name.replace(' ', '-')}`);
   radioLabel.innerText = newProject.name;
   radioLabel.addEventListener('click', showTodos);
   projectItem.append(radioInput, radioLabel);

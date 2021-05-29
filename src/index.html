@@ -16,7 +16,7 @@
       integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
       crossorigin="anonymous"
     />
-    <title>Todo App</title>
+    <title>Taskify</title>
   </head>
   <body>
     <nav class="navbar navbar-dark bg-dark mb-2 rounded-bottom">
@@ -25,23 +25,16 @@
       </div>
     </nav>
     <div class="alert-name-exists d-none">
-      <div class=" alert-danger text-danger d-flex ps-5 justify-content-between">
-      Project name already exists. Please choose another one
-      <div class="me-5" id="btnalert-name-exists"
-        type="button">
-       X
+      <div class="alert-danger text-danger d-flex ps-5 justify-content-between">
+        Project name already exists. Please choose another one
+        <div class="me-5" id="btnalert-name-exists" type="button">X</div>
       </div>
-    </div>
-
     </div>
     <div class="alert-name-blank d-none">
-      <div class=" alert-danger text-danger d-flex ps-5 justify-content-between">
-      Project name cannot be empty
-      <div class="me-5" id="btnalert-name-blank"
-        type="button">
-       X
+      <div class="alert-danger text-danger d-flex ps-5 justify-content-between">
+        Project name cannot be empty
+        <div class="me-5" id="btnalert-name-blank" type="button">X</div>
       </div>
-    </div>
     </div>
 
     <div class="container-fluid">
@@ -92,7 +85,7 @@
                         Please select a project first
                       </h5>
                       <button
-                        id='btn-close-modal'
+                        id="btn-close-modal"
                         type="button"
                         class="btn-close"
                         data-bs-dismiss="modal"

@@ -17,7 +17,7 @@
 
 ## Live Demo
 
-Visit [Taskify](https://github.com/MiguelArgentina/todo-list)
+Visit [Taskify](https://zealous-bell-630b4e.netlify.app/)
 
 ## Prerequisites
 
