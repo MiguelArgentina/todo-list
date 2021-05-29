@@ -10,62 +10,82 @@ const addProjectBtn = document.getElementById('project-submit');
 const projectInput = document.getElementById('newproject');
 const addTodoBtn = document.getElementById('submit-todo');
 const openModalBtn = document.getElementById('openModal');
-const projectsCollection = [];
+let projectsCollection = [];
 
-//Event listener ------------------
+
 addProjectBtn.addEventListener('click', addProjectEventHandler);
 addTodoBtn.addEventListener('click', addTodo);
 openModalBtn.addEventListener('click', changeSubmitText);
-window.onload = () => addProjectButton('Default Project');
 
-//Functions------------------
+window.onload = () => {
+
+  getDataFromStorage('taskifyData');
+
+  
+  if (projectsCollection.length == 0) {
+
+    const newProject = new Project("Default Project");
+    projectsCollection.push(newProject);
+    addProjectButtontoDom(newProject);
+    saveDataInStorage("taskifyData", projectsCollection);
+  } else {
+    projectsCollection.forEach(project => {
+      addProjectButtontoDom(project);
+    })
+  }
+
+
+};
+
+
 function addProjectEventHandler(e) {
   e.preventDefault();
 
-  addProjectButton();
-}
+  let newProject = "";
 
-function addProjectButton(projectName) {
-  let newProject = '';
+ newProject = new Project(projectInput.value)
 
-  projectName === undefined
-    ? (newProject = new Project(projectInput.value))
-    : (newProject = new Project(projectName));
 
-  if (helpers.projectNameExists(newProject.name, projectsCollection)) {
-    alert('Project name already exists. Please pick another one');
+  if (helpers.projectNameExists(newProject._name, projectsCollection)) {
+    alert("Project name already exists. Please pick another one");
     return;
   }
 
-  if (newProject.name == '') {
-    alert('Project name cannot be empty');
+  if (newProject.name == "") {
+    alert("Project name cannot be empty");
     return;
   }
 
   projectsCollection.push(newProject);
+  addProjectButtontoDom(newProject);
+  saveDataInStorage("taskifyData", projectsCollection);
+}
 
-  const projectList = document.querySelector('.project-list');
-  const projectItem = document.createElement('li');
-  projectItem.classList.add('my-2');
+function addProjectButtontoDom(newProject_) {
+  let newProject = newProject_;
 
-  const deleteProjectBtn = document.createElement('i');
-  deleteProjectBtn.classList.add('fas', 'fa-trash-alt', 'ms-2');
+  const projectList = document.querySelector(".project-list");
+  const projectItem = document.createElement("li");
+  projectItem.classList.add("my-2");
 
-  deleteProjectBtn.addEventListener('click', deleteProject);
+  const deleteProjectBtn = document.createElement("i");
+  deleteProjectBtn.classList.add("fas", "fa-trash-alt", "ms-2");
 
-  const radioInput = document.createElement('input');
+  deleteProjectBtn.addEventListener("click", deleteProject);
+
+  const radioInput = document.createElement("input");
   Object.assign(radioInput, {
-    type: 'radio',
-    className: 'btn-check',
-    name: 'options',
-    id: `option${projectsCollection.length}`,
-    autocomplete: 'off',
+    type: "radio",
+    className: "btn-check",
+    name: "options",
+  
+    autocomplete: "off",
   });
-  const radioLabel = document.createElement('label');
-  radioLabel.classList.add('btn', 'btn-outline-success');
-  radioLabel.setAttribute('for', `option${projectsCollection.length}`);
+  const radioLabel = document.createElement("label");
+  radioLabel.classList.add("btn", "btn-outline-success");
+  radioLabel.setAttribute("for", `option${projectsCollection.length}`);
   radioLabel.innerText = newProject._name;
-  radioLabel.addEventListener('click', showTodos);
+  radioLabel.addEventListener("click", showTodos);
   projectItem.append(radioInput, radioLabel);
   projectItem.appendChild(deleteProjectBtn);
   projectList.appendChild(projectItem);
@@ -104,19 +124,47 @@ function addTodo(e) {
 }
 
 function pushNewTodo(tempTodo, project) {
-  project.addTodo = tempTodo;
+
+  project._todos.push(tempTodo);
+
+  saveDataInStorage("taskifyData", projectsCollection);
+
+  
 }
 
 function updateExistingTodo(tempTodo, project) {
   project._todos.forEach((todo, index) => {
     if(todo._id == tempTodo._id) {
-      console.log(project._todos);
       project._todos.splice(index, 1, tempTodo);
-      console.log(project._todos);
     }
   })
+
+  saveDataInStorage("taskifyData", projectsCollection);
+
 }
 
+function saveDataInStorage(key, data) {
+  localStorage.removeItem(key);
+
+  localStorage.setItem(key, JSON.stringify(data));
+
+
+}
+
+function getDataFromStorage(key) {
+
+  projectsCollection = [];
+
+  JSON.parse(localStorage.getItem(key) || "[]").map((project) => {
+    Object.assign(new Project(), project);
+    
+    project._todos.map((todo) => {
+      Object.assign(new Todo(), todo);
+    });
+    projectsCollection.push(project);  
+  });
+  
+}
 
 function showTodos(e) {
   document.querySelector('.modal-title').innerText = e.target.innerText;
@@ -126,10 +174,10 @@ function showTodos(e) {
 function populateProjectTodos(projectTitle) {
   const todoContainer = document.getElementById('todosDropdowns');
   clearContainer('#todosDropdowns');
-  //Get the project clicked and show all the Todos
+
   const tempProject = helpers.getProject(projectTitle, projectsCollection);
   tempProject['_todos'].forEach((item) => {
-    //todo dropdown
+
     const dropDiv = document.createElement('div');
     dropDiv.classList.add('dropdown', 'col-12', 'col-lg-3', 'my-2');
 
@@ -148,7 +196,7 @@ function populateProjectTodos(projectTitle) {
     });
     dropToggle.setAttribute('data-bs-toggle', 'dropdown');
     dropToggle.setAttribute('aria-expanded', 'false');
-    dropToggle.innerText = item.title;
+    dropToggle.innerText = item._title;
     dropDiv.appendChild(dropToggle);
     dropDiv.appendChild(editBtn);
     dropDiv.appendChild(deleteBtn);
@@ -161,54 +209,60 @@ function populateProjectTodos(projectTitle) {
     dropMenu.setAttribute('aria-labelledby', 'dropdownMenuLink');
     dropDiv.appendChild(dropMenu);
 
-    //dropdown description
+
     const dropDescription = document.createElement('li');
     const dropDescriptionCont = document.createElement('p');
     dropDescriptionCont.classList.add('dropdown-item');
-    dropDescriptionCont.innerText = item.description;
+    dropDescriptionCont.innerText = item._description;
     dropDescription.appendChild(dropDescriptionCont);
     dropMenu.appendChild(dropDescription);
 
-    //dropdown due date
+
     const dropDate = document.createElement('li');
     const dropDateCont = document.createElement('p');
     dropDateCont.classList.add('dropdown-item');
-    dropDateCont.innerText = item.dueDate;
+    dropDateCont.innerText = item._dueDate;
     dropDate.appendChild(dropDateCont);
     dropMenu.appendChild(dropDate);
 
-    //dropdown priority
+ 
     const dropPriority = document.createElement('li');
     const dropPriorityCont = document.createElement('p');
     dropPriorityCont.classList.add('dropdown-item');
-    dropPriorityCont.innerText = item.priority;
+    dropPriorityCont.innerText = item._priority;
     dropPriority.appendChild(dropPriorityCont);
     dropMenu.appendChild(dropPriority);
     todoContainer.appendChild(dropDiv);
 
-    //dropID
+
     const dropId = document.createElement('li');
     const dropIdCont = document.createElement('p');
     dropIdCont.classList.add('dropdown-item', 'd-none');
-    dropIdCont.innerText = item.id;
+    dropIdCont.innerText = item._id;
     dropId.appendChild(dropIdCont);
     dropMenu.appendChild(dropId);
   });
 }
 
 function deleteTodo(e) {
+
   const projectName = document.querySelector('.modal-title').innerText;
   const projectToEdit = helpers.getProject(projectName, projectsCollection);
   const todoId = e.target.parentNode.childNodes[3].childNodes[3].innerText;
-  const todosCopy = projectToEdit.showTodos;
-  todosCopy.forEach((item, index) => {
-    if (item.id == todoId) {
-      todosCopy.splice(index, 1);
-      return;
+
+  projectToEdit._todos.forEach((item, index) => {
+
+    if (item._id == todoId) {
+  
+       projectToEdit._todos.splice(index, 1);
+
     }
   });
-  projectToEdit.setTodo = todosCopy;
+  projectsCollection = helpers.updateProject(projectToEdit, projectsCollection);
+
+  saveDataInStorage("taskifyData", projectsCollection);
   populateProjectTodos(projectName);
+
 }
 
 function editTodo(e) {
@@ -243,10 +297,12 @@ function deleteProject(e) {
   const projParent = e.target.parentNode.parentNode;
   projParent.removeChild(e.target.parentNode);
   projectsCollection.forEach((project, index) => {
-    if (project.name == projName) {
+    if (project._name == projName) {
+     
       projectsCollection.splice(index, 1);
-      return;
+      
     }
   });
+  saveDataInStorage("taskifyData", projectsCollection);
   clearContainer('#todosDropdowns');
 }
