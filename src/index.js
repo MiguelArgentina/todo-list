@@ -239,7 +239,7 @@ function addProjectButtontoDom(newProject_) {
     type: 'radio',
     className: 'btn-check',
     name: 'options',
-
+    id: newProject.name.replace(' ', '-'),
     autocomplete: 'off',
   });
   const radioLabel = document.createElement('label');
