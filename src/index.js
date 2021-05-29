@@ -244,7 +244,7 @@ function addProjectButtontoDom(newProject_) {
   });
   const radioLabel = document.createElement('label');
   radioLabel.classList.add('btn', 'btn-outline-success');
-  radioLabel.setAttribute('for', `option${projectsCollection.length}`);
+  radioLabel.setAttribute('for', `${ newProject.name.replace(' ', '-')}`);
   radioLabel.innerText = newProject.name;
   radioLabel.addEventListener('click', showTodos);
   projectItem.append(radioInput, radioLabel);
