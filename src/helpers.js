@@ -11,7 +11,7 @@ const generateTodoId = (project) => {
   }
 
   return index;
-}
+};
 
 const getProject = (projectName, projectsCollection) => {
   let tempProj = [];
@@ -21,7 +21,7 @@ const getProject = (projectName, projectsCollection) => {
     }
   });
   return tempProj;
-}
+};
 
 const updateProject = (projectToUpdate, projectsCollection) => {
   projectsCollection.forEach((project, index) => {
@@ -30,7 +30,7 @@ const updateProject = (projectToUpdate, projectsCollection) => {
     }
   });
   return projectsCollection;
-}
+};
 
 const projectNameExists = (projectName, projectsCollection) => {
   let nameExists = false;
@@ -43,7 +43,7 @@ const projectNameExists = (projectName, projectsCollection) => {
   });
 
   return nameExists;
-}
+};
 
 export {
   generateTodoId, getProject, projectNameExists, updateProject,

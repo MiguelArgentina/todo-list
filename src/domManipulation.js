@@ -32,7 +32,7 @@ const editTodo = (e) => {
   document.querySelector('#todoId').value = todoId;
 
   myModal.show();
-}
+};
 
 const deleteTodo = (e, projectsCollection) => {
   const projectName = document.querySelector('.modal-title').innerText;
@@ -114,7 +114,7 @@ const deleteTodo = (e, projectsCollection) => {
     dropId.appendChild(dropIdCont);
     dropMenu.appendChild(dropId);
   });
-}
+};
 
 const populateProjectTodos = (projectTitle, projectsCollection) => {
   const todoContainer = document.getElementById('todosDropdowns');
@@ -182,12 +182,12 @@ const populateProjectTodos = (projectTitle, projectsCollection) => {
     dropId.appendChild(dropIdCont);
     dropMenu.appendChild(dropId);
   });
-}
+};
 
 const showTodos = (e, projectsCollection) => {
   document.querySelector('.modal-title').innerText = e.target.innerText;
   populateProjectTodos(e.target.innerText, projectsCollection);
-}
+};
 
 const addProjectButtontoDom = (newProject_, projectsCollection) => {
   const newProject = newProject_;
@@ -217,7 +217,7 @@ const addProjectButtontoDom = (newProject_, projectsCollection) => {
   projectItem.append(radioInput, radioLabel);
   projectItem.appendChild(deleteProjectBtn);
   projectList.appendChild(projectItem);
-}
+};
 
 const addProjectEventHandler = (e, projectsCollection) => {
   e.preventDefault();
@@ -237,7 +237,7 @@ const addProjectEventHandler = (e, projectsCollection) => {
   projectsCollection.push(newProject);
   addProjectButtontoDom(newProject, projectsCollection);
   saveDataInStorage('taskifyData', projectsCollection);
-}
+};
 
 const addTodo = (e, projectsCollection) => {
   e.preventDefault();
@@ -267,12 +267,12 @@ const addTodo = (e, projectsCollection) => {
   document.querySelector('#btn-close-modal').click();
 
   populateProjectTodos(projectName, projectsCollection);
-}
+};
 
 const changeSubmitText = () => {
   const editTodoBtn = document.getElementById('submit-todo');
   editTodoBtn.innerText = 'Add todo';
-}
+};
 
 export {
   addProjectEventHandler,

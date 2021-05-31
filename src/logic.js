@@ -5,7 +5,7 @@ import clearContainer from './clearContainer';
 const saveDataInStorage = (key, data) => {
   localStorage.removeItem(key);
   localStorage.setItem(key, JSON.stringify(data));
-}
+};
 
 const getDataFromStorage = (key, projectsCollection) => {
   projectsCollection = [];
@@ -20,7 +20,7 @@ const getDataFromStorage = (key, projectsCollection) => {
     return 0;
   });
   return projectsCollection;
-}
+};
 
 const updateExistingTodo = (tempTodo, project, projectsCollection) => {
   project.todos.forEach((todo, index) => {
@@ -29,14 +29,14 @@ const updateExistingTodo = (tempTodo, project, projectsCollection) => {
     }
   });
   saveDataInStorage('taskifyData', projectsCollection);
-}
+};
 
 const pushNewTodo = (tempTodo, project, projectsCollection) => {
   project.todos.push(tempTodo);
 
   saveDataInStorage('taskifyData', projectsCollection);
   return projectsCollection;
-}
+};
 
 const deleteProject = (e, projectsCollection) => {
   const projName = e.target.parentNode.childNodes[1].innerText;
@@ -50,7 +50,7 @@ const deleteProject = (e, projectsCollection) => {
   saveDataInStorage('taskifyData', projectsCollection);
   clearContainer('#todosDropdowns');
   return projectsCollection;
-}
+};
 
 export {
   saveDataInStorage,
