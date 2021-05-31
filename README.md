@@ -32,7 +32,7 @@ Visit [Taskify](https://zealous-bell-630b4e.netlify.app/)
 
 ### Usage
 
-From within the project directory open the `index.html`
+From within the project directory after installing the required dependencies with `npm i` run  `npm start` to open the dev server to use the project locally.
 
 ## Authors
 
