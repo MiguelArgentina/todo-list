@@ -14,7 +14,7 @@ const projectInput = document.getElementById('newproject');
 const btnCloseAlertNameBlank = document.querySelector('#btnalert-name-blank');
 const btnCloseAlertNameExists = document.querySelector('#btnalert-name-exists');
 
-function editTodo(e) {
+const editTodo = (e) => {
   const myModal = new Modal(document.getElementById('exampleModal'));
   const editTodoBtn = document.getElementById('submit-todo');
   editTodoBtn.innerText = 'Update';
@@ -34,7 +34,7 @@ function editTodo(e) {
   myModal.show();
 }
 
-function deleteTodo(e, projectsCollection) {
+const deleteTodo = (e, projectsCollection) => {
   const projectName = document.querySelector('.modal-title').innerText;
   const projectToEdit = helpers.getProject(projectName, projectsCollection);
   const todoId = e.target.parentNode.childNodes[3].childNodes[3].innerText;
@@ -116,7 +116,7 @@ function deleteTodo(e, projectsCollection) {
   });
 }
 
-function populateProjectTodos(projectTitle, projectsCollection) {
+const populateProjectTodos = (projectTitle, projectsCollection) => {
   const todoContainer = document.getElementById('todosDropdowns');
   clearContainer('#todosDropdowns');
 
@@ -184,12 +184,12 @@ function populateProjectTodos(projectTitle, projectsCollection) {
   });
 }
 
-function showTodos(e, projectsCollection) {
+const showTodos = (e, projectsCollection) => {
   document.querySelector('.modal-title').innerText = e.target.innerText;
   populateProjectTodos(e.target.innerText, projectsCollection);
 }
 
-function addProjectButtontoDom(newProject_, projectsCollection) {
+const addProjectButtontoDom = (newProject_, projectsCollection) => {
   const newProject = newProject_;
 
   const projectList = document.querySelector('.project-list');
@@ -219,7 +219,7 @@ function addProjectButtontoDom(newProject_, projectsCollection) {
   projectList.appendChild(projectItem);
 }
 
-function addProjectEventHandler(e, projectsCollection) {
+const addProjectEventHandler = (e, projectsCollection) => {
   e.preventDefault();
   let newProject = '';
   newProject = new Project(projectInput.value);
@@ -239,7 +239,7 @@ function addProjectEventHandler(e, projectsCollection) {
   saveDataInStorage('taskifyData', projectsCollection);
 }
 
-function addTodo(e, projectsCollection) {
+const addTodo = (e, projectsCollection) => {
   e.preventDefault();
 
   const projectName = document.querySelector('.modal-title').innerText;
@@ -269,7 +269,7 @@ function addTodo(e, projectsCollection) {
   populateProjectTodos(projectName, projectsCollection);
 }
 
-function changeSubmitText() {
+const changeSubmitText = () => {
   const editTodoBtn = document.getElementById('submit-todo');
   editTodoBtn.innerText = 'Add todo';
 }

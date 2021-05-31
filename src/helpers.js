@@ -1,4 +1,4 @@
-function generateTodoId(project) {
+const generateTodoId = (project) => {
   let index = 0;
 
   if (project.todos.length === 0) return 0;
@@ -13,7 +13,7 @@ function generateTodoId(project) {
   return index;
 }
 
-function getProject(projectName, projectsCollection) {
+const getProject = (projectName, projectsCollection) => {
   let tempProj = [];
   projectsCollection.forEach((project) => {
     if (project.name === projectName) {
@@ -23,7 +23,7 @@ function getProject(projectName, projectsCollection) {
   return tempProj;
 }
 
-function updateProject(projectToUpdate, projectsCollection) {
+const updateProject = (projectToUpdate, projectsCollection) => {
   projectsCollection.forEach((project, index) => {
     if (project.name === projectToUpdate.name) {
       projectsCollection.splice(index, 1, projectToUpdate);
@@ -32,7 +32,7 @@ function updateProject(projectToUpdate, projectsCollection) {
   return projectsCollection;
 }
 
-function projectNameExists(projectName, projectsCollection) {
+const projectNameExists = (projectName, projectsCollection) => {
   let nameExists = false;
   if (projectsCollection.length === 0) { return false; }
 
