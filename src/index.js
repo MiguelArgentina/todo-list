@@ -1,5 +1,6 @@
 import Project from './project';
 import './style.scss';
+import axios from 'axios';
 import {
   saveDataInStorage,
   getDataFromStorage,
