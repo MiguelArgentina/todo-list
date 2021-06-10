@@ -32,8 +32,8 @@ const updateExistingTodo = (tempTodo, project, projectsCollection) => {
 };
 
 const pushNewTodo = (tempTodo, project, projectsCollection) => {
+  if (Object.keys(tempTodo).length !== 5) return 'Error pushing ToDo';
   project.todos.push(tempTodo);
-
   saveDataInStorage('taskifyData', projectsCollection);
   return projectsCollection;
 };
