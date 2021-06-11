@@ -1,4 +1,4 @@
-import { pushNewTodo } from './logic';
+import { pushNewTodo } from '../logic';
 
 const localStorageMock = {
   getItem: jest.fn(),

@@ -1,4 +1,4 @@
-import Todo from './todo';
+import Todo from '../todo';
 
 const todo1 = new Todo();
 it('returns an object of class todo', () => {

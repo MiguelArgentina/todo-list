@@ -1,6 +1,6 @@
 import {
   generateTodoId, getProject, updateProject, projectNameExists,
-} from './helpers';
+} from '../helpers';
 
 it('generates and id for each project', () => {
   const tempTodo = {
