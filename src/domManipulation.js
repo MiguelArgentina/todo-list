@@ -279,4 +279,5 @@ export {
   addTodo,
   changeSubmitText,
   addProjectButtontoDom,
+  populateProjectTodos,
 };
