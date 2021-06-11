@@ -34,6 +34,10 @@ Visit [Taskify](https://zealous-bell-630b4e.netlify.app/)
 
 From within the project directory after installing the required dependencies with `npm i` run  `npm start` to open the dev server to use the project locally.
 
+### Testing
+
+A script for testing was added, so user can simply run `npm test` from within the project's folder to execute all the tests.
+
 ## Authors
 
 👤 &nbsp; **Diego Hernández**
